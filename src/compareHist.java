@@ -4,12 +4,11 @@ public class compareHist {
 
 	public ArrayList<Double> run(ArrayList<float[][][]> imageHistMatrices, float[][][] qHsv, int compareMethod) {
 
-		int numBins = 8;
-		float[][][] histBase = histogram(qHsv, numBins, numBins, numBins);
+		int numBins = 9;
+		float[][][] histBase = histogram(qHsv, numBins);
 		ArrayList<Double> allResults = new ArrayList<Double>();
 
 		for (int i = 0; i < imageHistMatrices.size(); i++) {
-
 			float[][][] histTest = imageHistMatrices.get(i);
 			System.out.println("\n");
 			
@@ -36,7 +35,8 @@ public class compareHist {
 		return allResults;
 	}
 
-	public static float[][][] histogram(float[][][] hsvMatrix, int hBins, int sBins, int vBins) {
+	public static float[][][] histogram(float[][][] hsvMatrix, int numBins) {
+		int hBins = numBins; int sBins = numBins; int vBins = numBins;
 		float[][][] hist = new float[hBins][sBins][vBins];
 		int totalPixels = hsvMatrix.length * hsvMatrix[0].length * hsvMatrix[0][0].length;
 		float hStep = 360.0f / hBins;
@@ -51,15 +51,12 @@ public class compareHist {
 				int sIdx = (int) (sVal / sStep);
 				int vIdx = (int) (vVal / vStep);
 				// Check if the values fall into the bin
-				if (hIdx >= hBins) {
-					hIdx = hBins - 1;
-				}
-				if (sIdx >= sBins) {
+				if (hIdx >= hBins)
+					hIdx = hBins - 1;		
+				if (sIdx >= sBins) 
 					sIdx = sBins - 1;
-				}
-				if (vIdx >= vBins) {
+				if (vIdx >= vBins) 
 					vIdx = vBins - 1;
-				}
 				// Increment the count in the histogram
 				hist[hIdx][sIdx][vIdx]++;
 			}
@@ -78,7 +75,6 @@ public class compareHist {
 	public static double correlation(float[][][] histBase, float[][][] histTest, int bins) {
 		int rows = histBase.length;
 		int cols = histBase[0].length;
-		// int bins = h1[0][0].length;
 		double sum1 = 0, sum2 = 0, sum3 = 0;
 		double mean1 = 0, mean2 = 0;
 		for (int i = 0; i < rows; i++) {
@@ -140,7 +136,6 @@ public class compareHist {
 	public static double bhattacharyya(float[][][] histBase, float[][][] histTest, int bins) {
 		int rows = histBase.length;
 		int cols = histBase[0].length;
-		// int bins = histBase[0][0].length;
 		double sum = 0;
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {

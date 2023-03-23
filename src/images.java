@@ -14,6 +14,9 @@ public class images {
 
 	public static ArrayList<Image> details(Icon icon, String queryImgStr) throws IOException, ClassNotFoundException {
 
+		long startTime = System.nanoTime();
+		
+		
 		final File qIm = new File(queryImgStr);
 		final File dir = new File("src\\gallery");
 
@@ -52,36 +55,11 @@ public class images {
 			}
 		}
 
-		/*
-		 * ArrayList<String> imgsDir = new ArrayList<String>(); ArrayList<Image>
-		 * unproImgs = new ArrayList<Image>(); ArrayList<Image> proImgs = new
-		 * ArrayList<Image>(); ArrayList<float[][][]> imageMatrices = new ArrayList<>();
-		 * if (dir.isDirectory()) { // make sure it's a directory //insert popup msg
-		 * //return } for (final File f : dir.listFiles(IMAGE_FILTER)) { try {
-		 * BufferedImage image = ImageIO.read(f); int width = image.getWidth(); int
-		 * height = image.getHeight(); float[][][] hsvImage = new
-		 * float[height][width][3]; for (int y = 0; y < height; y++) { for (int x = 0; x
-		 * < width; x++) { int rgb = image.getRGB(x, y); int r = (rgb >> 16) & 0xff; int
-		 * g = (rgb >> 8) & 0xff; int b = rgb & 0xff; float[] hsv = RGBtoHSV(r, g, b);
-		 * hsvImage[y][x][0] = hsv[0]; hsvImage[y][x][1] = hsv[1]; hsvImage[y][x][2] =
-		 * hsv[2]; } } unproImgs.add(image); imageMatrices.add(hsvImage);
-		 * imgsDir.add(f.toString()); System.out.println("image: " + f.getName()); }
-		 * catch (final IOException e) { // handle errors here } }
-		 */
-
-		// HERE READ IN FROM FILE
+		// READ IN FROM FILE
 		ArrayList<float[][][]> imageHistMatrices = saveData.readHSV();
-
-		//
-		// no need to store all images on search only store the
-		// imagepaths then read them in when they get printed
 		ArrayList<String> imgsDir = new ArrayList<String>();
-		// ArrayList<Image> unproImgs = new ArrayList<Image>();
 		ArrayList<Image> proImgs = new ArrayList<Image>();
 		for (final File f : dir.listFiles(IMAGE_FILTER)) {
-
-			// BufferedImage image = ImageIO.read(f);
-			// unproImgs.add(image);
 			imgsDir.add(f.toString());
 		}
 
@@ -94,12 +72,9 @@ public class images {
 		ArrayList<Double> allResults = new ArrayList<Double>();
 		allResults = new compareHist().run(imageHistMatrices, qhsvImage, method);
 
-		// ArrayList<Image>[] fproImgs = (ArrayList<Image>[])new ArrayList[4];
 		ArrayList<String> fproImgs = new ArrayList<String>();
-		// fproImgs[method] = unproImgs;
 		fproImgs = imgsDir;
 
-		// Map<Double, Image> map = new HashMap<Double, Image>();
 		Map<Double, String> map = new HashMap<Double, String>();
 		for (int y = 0; y < allResults.size(); y++) {
 			map.put(allResults.get(y), fproImgs.get(y));
@@ -117,28 +92,31 @@ public class images {
 			System.out.println(s);
 		}
 
-		// taking top 10 images for meth2 and meth4
+		// taking top 10 images Correlation and Intersection
 		if (method == 1 || method == 3) {
 			for (int i = 0; i < fproImgs.size(); i++) {
 
 				File f = new File(fproImgs.get(i));
 				BufferedImage image = ImageIO.read(f);
-
-				// proImgs.add(fproImgs[method].get(i));
 				proImgs.add(image);
 			}
 		}
-		// taking top 10 images for meth1 and meth3
-		if (method == 0 || method == 2) {
-			for (int i = fproImgs.size() - 1; i > fproImgs.size() - 16; i--) {
+		// taking top 10 images for Bhattacharyya and Chi-Square
+		else {
+			for (int i = fproImgs.size() - 1; i > fproImgs.size() - 31; i--) {
 
 				File f = new File(fproImgs.get(i));
 				BufferedImage image = ImageIO.read(f);
-
-				// proImgs.add(fproImgs[method].get(i));
 				proImgs.add(image);
 			}
 		}
+		
+		long endTime = System.nanoTime();  // Record the end time in nanoseconds
+		long elapsedTime = endTime - startTime;  // Calculate the elapsed time in nanoseconds		
+		double elapsedSeconds = (double) elapsedTime / 1_000_000_000.0;  // Convert elapsed time to seconds
+		
+		System.out.println("Elapsed time (s): " + elapsedSeconds); 
+		
 		return proImgs;
 	}
 
@@ -158,17 +136,15 @@ public class images {
 			s = 0;
 		} else {
 			s = delta / max;
-			if (rf == max) {
+			if (rf == max) 
 				h = (gf - bf) / delta;
-			} else if (gf == max) {
+			 else if (gf == max)
 				h = 2 + (bf - rf) / delta;
-			} else {
+			 else 
 				h = 4 + (rf - gf) / delta;
-			}
 			h *= 60;
-			if (h < 0) {
+			if (h < 0) 
 				h += 360;
-			}
 		}
 		return new float[] { h, s, v };
 	}

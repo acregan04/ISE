@@ -4,11 +4,17 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 public class saveData implements Serializable {
 
@@ -26,18 +32,19 @@ public class saveData implements Serializable {
 	};
 
 	public static void HSVSaver() throws IOException {
+		
+		long startTime = System.nanoTime();
 
 		final File dir = new File("src\\gallery");
-
 		ArrayList<float[][][]> imageMatrices = new ArrayList<>();
 
-		if (dir.isDirectory()) { // make sure it's a directory
-			// insert popup msg
-			// return
+		if (dir.isDirectory()== false) { // make sure it's a directory
+			JOptionPane.showMessageDialog(null, "No image gallery detected", "Warning",
+					JOptionPane.WARNING_MESSAGE);
+			return;
 		}
 
 		for (final File f : dir.listFiles(IMAGE_FILTER)) {
-
 			try {
 				BufferedImage image = ImageIO.read(f);
 
@@ -62,20 +69,23 @@ public class saveData implements Serializable {
 				System.out.println("image: " + f.getName());
 
 			} catch (final IOException e) {
-				// handle errors here
+				JOptionPane.showMessageDialog(null, "Failed to read in images from gallery", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				return;
 			}
 		}
 
 		ArrayList<float[][][]> imageHistoMatrices = new ArrayList<>();
 		for (int i = 0; i < imageMatrices.size(); i++) {
 
-			// FIX numBins here
-			float[][][] histTest = compareHist.histogram(imageMatrices.get(i), 8, 8, 8);
+			int numBins = 9;
+			float[][][] histTest = compareHist.histogram(imageMatrices.get(i), numBins);
 			imageHistoMatrices.add(histTest);
 			System.out.println("hist: " + i);
 		}
 
 		File file = new File("src\\test.bin");
+		
 		try (DataOutputStream out = new DataOutputStream(new FileOutputStream(file))) {
 			// Write the header
 			out.writeInt(imageHistoMatrices.size());
@@ -94,11 +104,24 @@ public class saveData implements Serializable {
 					}
 				}
 			}
+			System.out.println("SAVED!");
+			//JOptionPane.showMessageDialog(null, "Data successfully saved to file", "Process Update",
+			//		JOptionPane.INFORMATION_MESSAGE);
 		}
-		System.out.println("SAVED!");
+		catch (final IOException e) {
+			JOptionPane.showMessageDialog(null, "Failed to data to file", "Warning",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		long endTime = System.nanoTime();  // Record the end time in nanoseconds
+		long elapsedTime = endTime - startTime;  // Calculate the elapsed time in nanoseconds		
+		double elapsedSeconds = (double) elapsedTime / 1_000_000_000.0;  // Convert elapsed time to seconds
+		
+		System.out.println("Elapsed time (s): " + elapsedSeconds); 
 	}
 
 	public static ArrayList<float[][][]> readHSV() throws IOException {
+		
 		File file = new File("src\\test.bin");
 		ArrayList<float[][][]> data = new ArrayList<>();
 
@@ -110,7 +133,7 @@ public class saveData implements Serializable {
 			for (int k = 0; k < numImages; k++) {
 				int width = in.readInt();
 				int height = in.readInt();
-				int depth = 8; // Set the depth to 3
+				int depth = 9;
 
 				// Initialize the image array with the correct dimensions
 				float[][][] image = new float[width][height][depth];
@@ -126,40 +149,61 @@ public class saveData implements Serializable {
 				data.add(image);
 			}
 		}
+		catch (final IOException e) {
+			JOptionPane.showMessageDialog(null, "Failed to read data from file", "Warning",
+					JOptionPane.WARNING_MESSAGE);
+			
+		}
 		return data;
 	}
 
 	/*
-	 * public static void saver(ArrayList<Double>[] scores) throws IOException {
-	 * 
-	 * // Create a new file File file = new File("src\\scores.csv");
-	 * 
-	 * if (file.exists()) { file.delete();
-	 * 
-	 * // Write the data FileWriter writer = new FileWriter(file); for (int i = 0; i
-	 * < scores.length; i++) { // Write the ID writer.write("ID" + (i+1) + ",");
-	 * //ID1*Correlation* //ID2 *Chi-square* //ID3*Intersection*
-	 * //ID4*Bhattacharyya*
-	 * 
-	 * // Write the scores List<Double> row = scores[i]; for (Double score : row) {
-	 * writer.write(score + ","); }
-	 * 
-	 * // Move to next row writer.write("\n"); }
-	 * 
-	 * // Close the file writer.close(); }
-	 * 
-	 * }
-	 * 
-	 * public static ArrayList<Double>[] readScores() throws FileNotFoundException {
-	 * 
-	 * String fileName = "src\\scores.csv";
-	 * 
-	 * List<ArrayList<Double>> result = new ArrayList<>(); Scanner scanner = new
-	 * Scanner(new File(fileName)); while (scanner.hasNextLine()) {
-	 * ArrayList<Double> row = new ArrayList<>(); String[] data =
-	 * scanner.nextLine().split(","); for (int i = 1; i < data.length; i++) {
-	 * row.add(Double.parseDouble(data[i])); } result.add(row); } scanner.close();
-	 * return result.toArray(new ArrayList[0]); }
-	 */
+	public static void saver(ArrayList<Double>[] scores) throws IOException {
+
+		// Create a new file 
+		File file = new File("src\\scores.csv");
+
+		if (file.exists()) { file.delete();
+		// Write the data 
+		FileWriter writer = new FileWriter(file); 
+		for (int i = 0; i < scores.length; i++) { 
+			// Write the ID 
+			writer.write("ID" + (i+1) + ",");
+			//ID1*Correlation*
+			//ID2 *Chi-square*
+			//ID3*Intersection*
+			//ID4*Bhattacharyya*
+
+			// Write the scores 
+			List<Double> row = scores[i]; 
+			for (Double score : row) {
+				writer.write(score + ","); }
+
+			// Move to next row 
+			writer.write("\n"); }
+
+		// Close the file 
+		writer.close(); }
+	}
+
+	public static ArrayList<Double>[] readScores() throws FileNotFoundException {
+
+		String fileName = "src\\scores.csv";
+
+		List<ArrayList<Double>> result = new ArrayList<>(); 
+		Scanner scanner = new Scanner(new File(fileName)); 
+		while (scanner.hasNextLine()) {
+			ArrayList<Double> row = new ArrayList<>(); 
+			String[] data = scanner.nextLine().split(","); 
+			for (int i = 1; i < data.length; i++) 
+			{
+				row.add(Double.parseDouble(data[i])); 
+			} 
+			result.add(row); 
+		} 
+		scanner.close();
+		return result.toArray(new ArrayList[0]); 
+	}
+	*/
 
 }
