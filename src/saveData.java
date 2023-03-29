@@ -78,7 +78,7 @@ public class saveData implements Serializable {
 		ArrayList<float[][][]> imageHistoMatrices = new ArrayList<>();
 		for (int i = 0; i < imageMatrices.size(); i++) {
 
-			int numBins = 9;
+			int numBins = 8;
 			float[][][] histTest = compareHist.histogram(imageMatrices.get(i), numBins);
 			imageHistoMatrices.add(histTest);
 			System.out.println("hist: " + i);
@@ -105,11 +105,11 @@ public class saveData implements Serializable {
 				}
 			}
 			System.out.println("SAVED!");
-			//JOptionPane.showMessageDialog(null, "Data successfully saved to file", "Process Update",
-			//		JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Data successfully saved to file", "Process Update",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 		catch (final IOException e) {
-			JOptionPane.showMessageDialog(null, "Failed to data to file", "Warning",
+			JOptionPane.showMessageDialog(null, "Failed to save data to file", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
@@ -133,7 +133,7 @@ public class saveData implements Serializable {
 			for (int k = 0; k < numImages; k++) {
 				int width = in.readInt();
 				int height = in.readInt();
-				int depth = 9;
+				int depth = 8;
 
 				// Initialize the image array with the correct dimensions
 				float[][][] image = new float[width][height][depth];
@@ -149,6 +149,7 @@ public class saveData implements Serializable {
 				data.add(image);
 			}
 		}
+		
 		catch (final IOException e) {
 			JOptionPane.showMessageDialog(null, "Failed to read data from file", "Warning",
 					JOptionPane.WARNING_MESSAGE);

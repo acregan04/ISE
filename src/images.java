@@ -67,7 +67,7 @@ public class images {
 		// method 1 *Chi-square*
 		// method 2 *Intersection*
 		// method 3 *Bhattacharyya*
-		int method = 3;
+		int method = 2;
 
 		ArrayList<Double> allResults = new ArrayList<Double>();
 		allResults = new compareHist().run(imageHistMatrices, qhsvImage, method);
