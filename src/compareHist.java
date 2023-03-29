@@ -1,7 +1,23 @@
 import java.util.ArrayList;
 
+/*
+ * @author Adam Cregan
+ * @version 2, 29/03/2023
+ * 
+ * This class is used for generating distance measurement scores for 
+ * comparing the query image to every other image in the database
+ */
 public class compareHist {
 
+	/*
+	 * @param	imageHistMatrices	all image histogram data
+	 * @param	qHsv				query image histogram
+	 * @param	compareMethod		distance measurement selection
+	 * @return	ArrayList<Double>	complete list of comparison scores
+	 *
+	 * This method takes each image histogram and runs it through the correct 
+	 *  comparison measure with the query image to generate a list of scores
+	 */
 	public ArrayList<Double> run(ArrayList<float[][][]> imageHistMatrices, float[][][] qHsv, int compareMethod) {
 
 		int numBins = 8;
@@ -11,21 +27,24 @@ public class compareHist {
 		for (int i = 0; i < imageHistMatrices.size(); i++) {
 			float[][][] histTest = imageHistMatrices.get(i);
 			System.out.println("\n");
-			
 			double baseTest;
 
+			// Correlation
 			if (compareMethod == 0) {
 				baseTest = correlation(histBase, histTest, numBins);
 				System.out.println("Method " + compareMethod + ": " + baseTest);
 				allResults.add(baseTest);
+			// Chi-Square
 			} else if (compareMethod == 1) {
 				baseTest = chisquare(histBase, histTest, numBins); // change correlation to Chi-square
 				System.out.println("Method " + compareMethod + ": " + baseTest);
 				allResults.add(baseTest);
+			// Intersection
 			} else if (compareMethod == 2) {
 				baseTest = intersection(histBase, histTest, numBins); // change correlation to Intersection
 				System.out.println("Method " + compareMethod + ": " + baseTest);
 				allResults.add(baseTest);
+			// Bhattacharyya
 			} else if (compareMethod == 3) {
 				baseTest = bhattacharyya(histBase, histTest, numBins); // change correlation to Bhattacharyya
 				System.out.println("Method " + compareMethod + ": " + baseTest);
@@ -35,6 +54,13 @@ public class compareHist {
 		return allResults;
 	}
 
+	/*
+	 * @param	hsvMatrix	HSV image data
+	 * @param	numBins		number of histogram bins
+	 * @return	float[][][]	histogram representing the HSV image data
+	 *
+	 * This method generate a histogram for the image data (parameter)
+	 */
 	public static float[][][] histogram(float[][][] hsvMatrix, int numBins) {
 		int hBins = numBins; int sBins = numBins; int vBins = numBins;
 		float[][][] hist = new float[hBins][sBins][vBins];
@@ -72,6 +98,14 @@ public class compareHist {
 		return hist;
 	}
 
+	/*
+	 * @param	histBase	query image histogram
+	 * @param	histTest	test image histogram
+	 * @param	bins		number of histogram bins
+	 * @return	double		comparison score
+	 *
+	 * This method compares two histograms using the Correlation formula
+	 */
 	public static double correlation(float[][][] histBase, float[][][] histTest, int bins) {
 		int rows = histBase.length;
 		int cols = histBase[0].length;
@@ -99,6 +133,14 @@ public class compareHist {
 		return sum1 / Math.sqrt(sum2 * sum3);
 	}
 
+	/*
+	 * @param	histBase	query image histogram
+	 * @param	histTest	test image histogram
+	 * @param	bins		number of histogram bins
+	 * @return	double		comparison score
+	 *
+	 * This method compares two histograms using the Intersection formula
+	 */
 	public static double intersection(float[][][] histBase, float[][][] histTest, int bins) {
 		double intersection = 0;
 		int hBins = histBase.length;
@@ -114,6 +156,14 @@ public class compareHist {
 		return intersection;
 	}
 
+	/*
+	 * @param	histBase	query image histogram
+	 * @param	histTest	test image histogram
+	 * @param	bins		number of histogram bins
+	 * @return	double		comparison score
+	 *
+	 * This method compares two histograms using the Chi-Square formula
+	 */
 	public static double chisquare(float[][][] histBase, float[][][] histTest, int bins) {
 		double distance = 0;
 		int hBins = histBase.length;
@@ -133,6 +183,15 @@ public class compareHist {
 		return distance;
 	}
 
+	/*
+	 * @param	histBase	query image histogram
+	 * @param	histTest	test image histogram
+	 * @param	bins		number of histogram bins
+	 * 
+	 * @return	double		comparison score
+	 *
+	 * This method compares two histograms using the Bhattacharyya formula
+	 */
 	public static double bhattacharyya(float[][][] histBase, float[][][] histTest, int bins) {
 		int rows = histBase.length;
 		int cols = histBase[0].length;

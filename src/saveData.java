@@ -16,10 +16,18 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+/*
+ * @author Adam Cregan
+ * @version 2, 29/03/2023
+ * 
+ * This class is used to save data to an external file,
+ * and to read the data in from the external file
+ */
 public class saveData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	// File Filter
 	private static final FileFilter IMAGE_FILTER = new FileFilter() {
 		@Override
 		public boolean accept(final File file) {
@@ -30,9 +38,15 @@ public class saveData implements Serializable {
 			return name.endsWith(".jpg") || name.endsWith(".png");
 		}
 	};
+	
 
+	/*
+	 * This method reads in image data for each image in a database,
+	 * creates histograms according to each image, then writes that data
+	 * to an external .bin file
+	 */
 	public static void HSVSaver() throws IOException {
-		
+
 		long startTime = System.nanoTime();
 
 		final File dir = new File("src\\gallery");
@@ -75,6 +89,7 @@ public class saveData implements Serializable {
 			}
 		}
 
+		// Generate histograms
 		ArrayList<float[][][]> imageHistoMatrices = new ArrayList<>();
 		for (int i = 0; i < imageMatrices.size(); i++) {
 
@@ -84,8 +99,9 @@ public class saveData implements Serializable {
 			System.out.println("hist: " + i);
 		}
 
+		//External file
 		File file = new File("src\\test.bin");
-		
+
 		try (DataOutputStream out = new DataOutputStream(new FileOutputStream(file))) {
 			// Write the header
 			out.writeInt(imageHistoMatrices.size());
@@ -116,12 +132,18 @@ public class saveData implements Serializable {
 		long endTime = System.nanoTime();  // Record the end time in nanoseconds
 		long elapsedTime = endTime - startTime;  // Calculate the elapsed time in nanoseconds		
 		double elapsedSeconds = (double) elapsedTime / 1_000_000_000.0;  // Convert elapsed time to seconds
-		
+
 		System.out.println("Elapsed time (s): " + elapsedSeconds); 
 	}
 
+	/*
+	 * @return	ArrayList<float[][][]>	The complete image histogram data
+	 *
+	 * This method reads in the image data from the .bin file and returns it back
+	 *  to images.java so that distance measures can be calculated
+	 */
 	public static ArrayList<float[][][]> readHSV() throws IOException {
-		
+
 		File file = new File("src\\test.bin");
 		ArrayList<float[][][]> data = new ArrayList<>();
 
@@ -149,21 +171,17 @@ public class saveData implements Serializable {
 				data.add(image);
 			}
 		}
-		
 		catch (final IOException e) {
 			JOptionPane.showMessageDialog(null, "Failed to read data from file", "Warning",
 					JOptionPane.WARNING_MESSAGE);
-			
 		}
 		return data;
 	}
 
 	/*
 	public static void saver(ArrayList<Double>[] scores) throws IOException {
-
 		// Create a new file 
 		File file = new File("src\\scores.csv");
-
 		if (file.exists()) { file.delete();
 		// Write the data 
 		FileWriter writer = new FileWriter(file); 
@@ -174,23 +192,17 @@ public class saveData implements Serializable {
 			//ID2 *Chi-square*
 			//ID3*Intersection*
 			//ID4*Bhattacharyya*
-
 			// Write the scores 
 			List<Double> row = scores[i]; 
 			for (Double score : row) {
 				writer.write(score + ","); }
-
 			// Move to next row 
 			writer.write("\n"); }
-
 		// Close the file 
 		writer.close(); }
 	}
-
 	public static ArrayList<Double>[] readScores() throws FileNotFoundException {
-
 		String fileName = "src\\scores.csv";
-
 		List<ArrayList<Double>> result = new ArrayList<>(); 
 		Scanner scanner = new Scanner(new File(fileName)); 
 		while (scanner.hasNextLine()) {
@@ -205,6 +217,6 @@ public class saveData implements Serializable {
 		scanner.close();
 		return result.toArray(new ArrayList[0]); 
 	}
-	*/
+	 */
 
 }

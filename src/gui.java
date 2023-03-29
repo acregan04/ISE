@@ -26,18 +26,13 @@ import javax.swing.JScrollPane;
 
 public class gui extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	String qImG = "";
-
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
+
+	// Launch the application.
 	public static void main(String[] args) {
 
 		EventQueue.invokeLater(new Runnable() {

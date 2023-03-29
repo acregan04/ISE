@@ -10,12 +10,19 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 
+/*
+ * @author Adam Cregan
+ * @version 2, 29/03/2023
+ * 
+ * This class is used as the backbone of the back-end, as it pulls together the saved data
+ * and calls the histograms to be generated, and the comparison measures on those histograms.
+ * It sorts the images by the comparison scores so the most similar images are returned
+ */
 public class images {
 
 	public static ArrayList<Image> details(Icon icon, String queryImgStr) throws IOException, ClassNotFoundException {
 
 		long startTime = System.nanoTime();
-		
 		
 		final File qIm = new File(queryImgStr);
 		final File dir = new File("src\\gallery");
