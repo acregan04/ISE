@@ -12,7 +12,7 @@ import javax.swing.Icon;
 
 /*
  * @author Adam Cregan
- * @version 2, 29/03/2023
+ * @version 2, 30/03/2023
  * 
  * This class is used as the backbone of the back-end, as it pulls together the saved data
  * and calls the histograms to be generated, and the comparison measures on those histograms.
@@ -20,8 +20,17 @@ import javax.swing.Icon;
  */
 public class images {
 
+	/*
+	 * @param	icon				query image
+	 * @param	queryImgStr			file-path for query image
+	 * @return	ArrayList<Image>	complete list sorted images for display
+	 *
+	 * This method creates the HSV histogram from the query image, reads in all the image data, then 
+	 * calls the function to generate comparison scores. The image database is then sorted by the score order.
+	 */
 	public static ArrayList<Image> details(Icon icon, String queryImgStr) throws IOException, ClassNotFoundException {
 
+		// timer
 		long startTime = System.nanoTime();
 		
 		final File qIm = new File(queryImgStr);
@@ -48,6 +57,7 @@ public class images {
 		int qHeight = qImage.getHeight();
 		float[][][] qhsvImage = new float[qHeight][qWidth][3];
 
+		// HSV
 		for (int y = 0; y < qHeight; y++) {
 			for (int x = 0; x < qWidth; x++) {
 				int rgb = qImage.getRGB(x, y);
@@ -62,7 +72,7 @@ public class images {
 			}
 		}
 
-		// READ IN FROM FILE
+		// read in from file
 		ArrayList<float[][][]> imageHistMatrices = saveData.readHSV();
 		ArrayList<String> imgsDir = new ArrayList<String>();
 		ArrayList<Image> proImgs = new ArrayList<Image>();
@@ -77,19 +87,19 @@ public class images {
 		int method = 2;
 
 		ArrayList<Double> allResults = new ArrayList<Double>();
+		
+		// Get scores
 		allResults = new compareHist().run(imageHistMatrices, qhsvImage, method);
-
 		ArrayList<String> fproImgs = new ArrayList<String>();
 		fproImgs = imgsDir;
 
+		// Sorts images by the order of the sorted scores
 		Map<Double, String> map = new HashMap<Double, String>();
 		for (int y = 0; y < allResults.size(); y++) {
 			map.put(allResults.get(y), fproImgs.get(y));
 		}
-
 		Collections.sort(allResults);
 		fproImgs.clear();
-
 		for (int z = 0; z < map.size(); z++) {
 			fproImgs.add(map.get(allResults.get(z)));
 		}
@@ -102,7 +112,6 @@ public class images {
 		// taking top 10 images Correlation and Intersection
 		if (method == 1 || method == 3) {
 			for (int i = 0; i < fproImgs.size(); i++) {
-
 				File f = new File(fproImgs.get(i));
 				BufferedImage image = ImageIO.read(f);
 				proImgs.add(image);
@@ -111,7 +120,6 @@ public class images {
 		// taking top 10 images for Bhattacharyya and Chi-Square
 		else {
 			for (int i = fproImgs.size() - 1; i > fproImgs.size() - 31; i--) {
-
 				File f = new File(fproImgs.get(i));
 				BufferedImage image = ImageIO.read(f);
 				proImgs.add(image);
@@ -120,13 +128,18 @@ public class images {
 		
 		long endTime = System.nanoTime();  // Record the end time in nanoseconds
 		long elapsedTime = endTime - startTime;  // Calculate the elapsed time in nanoseconds		
-		double elapsedSeconds = (double) elapsedTime / 1_000_000_000.0;  // Convert elapsed time to seconds
-		
+		double elapsedSeconds = (double) elapsedTime / 1_000_000_000.0;  // Convert elapsed time to seconds		
 		System.out.println("Elapsed time (s): " + elapsedSeconds); 
 		
 		return proImgs;
 	}
 
+	/*
+	 * @param	r, g, b		stores image RGB values
+	 * @return	float[]		array of image HSV data
+	 *
+	 * This method converts the RBG values to HSV values
+	 */
 	public static float[] RGBtoHSV(int r, int g, int b) {
 		float h, s, v;
 		float rf = r / 255.0f;

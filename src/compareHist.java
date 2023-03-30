@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 /*
  * @author Adam Cregan
- * @version 2, 29/03/2023
+ * @version 2, 30/03/2023
  * 
  * This class is used for generating distance measurement scores for 
  * comparing the query image to every other image in the database
