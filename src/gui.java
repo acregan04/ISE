@@ -177,7 +177,7 @@ public class gui extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 
 				//lblQImg.setText("");
-				lblSearchImg.setText("waiting...");
+				lblSearchImg.setText("pending...");
 				lblSearchImg.setIcon(null);
 
 				lblResImg_1.setIcon(null);
@@ -318,144 +318,147 @@ public class gui extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				ArrayList<Image> proImgs = null;
 				try {
-					try {
+					if (qImG.toLowerCase().endsWith(".jpg") || qImG.toLowerCase().endsWith(".jpeg"))
 						proImgs = new ArrayList<Image>(images.details(lblSearchImg.getIcon(), qImG));
-					} catch (ClassNotFoundException e1) {
-						JOptionPane.showMessageDialog(null, "Image search failed", "Warning",
+					else {
+						JOptionPane.showMessageDialog(null, "Invalid file selected. Please select an image", "Warning",
 								JOptionPane.WARNING_MESSAGE);
-						e1.printStackTrace();
 						return;
 					}
-					if (proImgs.isEmpty()==false) {
-						
-						// Set the load the closest images to the GUI
-						ImageIcon resIcon1 = new ImageIcon(proImgs.get(0).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_1.setIcon(resIcon1);
-						lblResImg_1.setText("");
-
-						ImageIcon resIcon2 = new ImageIcon(proImgs.get(1).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_2.setIcon(resIcon2);
-						lblResImg_2.setText("");
-
-						ImageIcon resIcon3 = new ImageIcon(proImgs.get(2).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_3.setIcon(resIcon3);
-						lblResImg_3.setText("");
-
-						ImageIcon resIcon4 = new ImageIcon(proImgs.get(3).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_4.setIcon(resIcon4);
-						lblResImg_4.setText("");
-
-						ImageIcon resIcon5 = new ImageIcon(proImgs.get(4).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_5.setIcon(resIcon5);
-						lblResImg_5.setText("");
-
-						ImageIcon resIcon6 = new ImageIcon(proImgs.get(5).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_6.setIcon(resIcon6);
-						lblResImg_6.setText("");
-
-						ImageIcon resIcon7 = new ImageIcon(proImgs.get(6).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_7.setIcon(resIcon7);
-						lblResImg_7.setText("");
-
-						ImageIcon resIcon8 = new ImageIcon(proImgs.get(7).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_8.setIcon(resIcon8);
-						lblResImg_8.setText("");
-
-						ImageIcon resIcon9 = new ImageIcon(proImgs.get(8).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_9.setIcon(resIcon9);
-						lblResImg_9.setText("");
-
-						ImageIcon resIcon10 = new ImageIcon(proImgs.get(9).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_10.setIcon(resIcon10);
-						lblResImg_10.setText("");
-
-						ImageIcon resIcon11 = new ImageIcon(proImgs.get(10).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_11.setIcon(resIcon11);
-						lblResImg_11.setText("");
-
-						ImageIcon resIcon12 = new ImageIcon(proImgs.get(11).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_12.setIcon(resIcon12);
-						lblResImg_12.setText("");
-
-						ImageIcon resIcon13 = new ImageIcon(proImgs.get(12).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_13.setIcon(resIcon13);
-						lblResImg_13.setText("");
-
-						ImageIcon resIcon14 = new ImageIcon(proImgs.get(13).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_14.setIcon(resIcon14);
-						lblResImg_14.setText("");
-
-						ImageIcon resIcon15 = new ImageIcon(proImgs.get(14).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-						lblResImg_15.setIcon(resIcon15);
-						lblResImg_15.setText("");
-
-						/*
-										ImageIcon resIcon16 = new ImageIcon(proImgs.get(15).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_16.setIcon(resIcon16);
-										lblResImg_16.setText("");
-
-										ImageIcon resIcon17 = new ImageIcon(proImgs.get(16).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_17.setIcon(resIcon17);
-										lblResImg_17.setText("");
-
-										ImageIcon resIcon18 = new ImageIcon(proImgs.get(17).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_18.setIcon(resIcon18);
-										lblResImg_18.setText("");
-
-										ImageIcon resIcon19 = new ImageIcon(proImgs.get(18).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_19.setIcon(resIcon19);
-										lblResImg_19.setText("");
-
-										ImageIcon resIcon20 = new ImageIcon(proImgs.get(19).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_20.setIcon(resIcon20);
-										lblResImg_20.setText("");
-
-										ImageIcon resIcon21 = new ImageIcon(proImgs.get(20).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_21.setIcon(resIcon21);
-										lblResImg_21.setText("");
-
-										ImageIcon resIcon22 = new ImageIcon(proImgs.get(21).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_22.setIcon(resIcon22);
-										lblResImg_22.setText("");
-
-										ImageIcon resIcon23 = new ImageIcon(proImgs.get(22).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_23.setIcon(resIcon23);
-										lblResImg_23.setText("");
-
-										ImageIcon resIcon24 = new ImageIcon(proImgs.get(23).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_24.setIcon(resIcon24);
-										lblResImg_24.setText("");
-
-										ImageIcon resIcon25 = new ImageIcon(proImgs.get(24).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_25.setIcon(resIcon25);
-										lblResImg_25.setText("");
-
-										ImageIcon resIcon26 = new ImageIcon(proImgs.get(25).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_26.setIcon(resIcon26);
-										lblResImg_26.setText("");
-
-										ImageIcon resIcon27 = new ImageIcon(proImgs.get(26).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_27.setIcon(resIcon27);
-										lblResImg_27.setText("");
-
-										ImageIcon resIcon28 = new ImageIcon(proImgs.get(27).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_28.setIcon(resIcon28);
-										lblResImg_28.setText("");
-
-										ImageIcon resIcon29 = new ImageIcon(proImgs.get(28).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_29.setIcon(resIcon29);
-										lblResImg_29.setText("");
-
-										ImageIcon resIcon30 = new ImageIcon(proImgs.get(29).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
-										lblResImg_30.setIcon(resIcon30);
-										lblResImg_30.setText("");
-						 */
-					}
-				} catch (IOException e1) {
-					System.out.println("No image selected");
-					JOptionPane.showMessageDialog(null, "No search image selected", "Warning",
+				
+				} catch (ClassNotFoundException e1) {
+					JOptionPane.showMessageDialog(null, "Image search failed", "Warning",
 							JOptionPane.WARNING_MESSAGE);
 					return;
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Not enough images in the database to populate the interface", "Warning",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				if (proImgs.isEmpty()==false) {
+					
+					// Set the load the closest images to the GUI
+					ImageIcon resIcon1 = new ImageIcon(proImgs.get(0).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_1.setIcon(resIcon1);
+					lblResImg_1.setText("");
+
+					ImageIcon resIcon2 = new ImageIcon(proImgs.get(1).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_2.setIcon(resIcon2);
+					lblResImg_2.setText("");
+
+					ImageIcon resIcon3 = new ImageIcon(proImgs.get(2).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_3.setIcon(resIcon3);
+					lblResImg_3.setText("");
+
+					ImageIcon resIcon4 = new ImageIcon(proImgs.get(3).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_4.setIcon(resIcon4);
+					lblResImg_4.setText("");
+
+					ImageIcon resIcon5 = new ImageIcon(proImgs.get(4).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_5.setIcon(resIcon5);
+					lblResImg_5.setText("");
+
+					ImageIcon resIcon6 = new ImageIcon(proImgs.get(5).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_6.setIcon(resIcon6);
+					lblResImg_6.setText("");
+
+					ImageIcon resIcon7 = new ImageIcon(proImgs.get(6).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_7.setIcon(resIcon7);
+					lblResImg_7.setText("");
+
+					ImageIcon resIcon8 = new ImageIcon(proImgs.get(7).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_8.setIcon(resIcon8);
+					lblResImg_8.setText("");
+
+					ImageIcon resIcon9 = new ImageIcon(proImgs.get(8).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_9.setIcon(resIcon9);
+					lblResImg_9.setText("");
+
+					ImageIcon resIcon10 = new ImageIcon(proImgs.get(9).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_10.setIcon(resIcon10);
+					lblResImg_10.setText("");
+
+					ImageIcon resIcon11 = new ImageIcon(proImgs.get(10).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_11.setIcon(resIcon11);
+					lblResImg_11.setText("");
+
+					ImageIcon resIcon12 = new ImageIcon(proImgs.get(11).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_12.setIcon(resIcon12);
+					lblResImg_12.setText("");
+
+					ImageIcon resIcon13 = new ImageIcon(proImgs.get(12).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_13.setIcon(resIcon13);
+					lblResImg_13.setText("");
+
+					ImageIcon resIcon14 = new ImageIcon(proImgs.get(13).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_14.setIcon(resIcon14);
+					lblResImg_14.setText("");
+
+					ImageIcon resIcon15 = new ImageIcon(proImgs.get(14).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+					lblResImg_15.setIcon(resIcon15);
+					lblResImg_15.setText("");
+
+					/*
+									ImageIcon resIcon16 = new ImageIcon(proImgs.get(15).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_16.setIcon(resIcon16);
+									lblResImg_16.setText("");
+
+									ImageIcon resIcon17 = new ImageIcon(proImgs.get(16).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_17.setIcon(resIcon17);
+									lblResImg_17.setText("");
+
+									ImageIcon resIcon18 = new ImageIcon(proImgs.get(17).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_18.setIcon(resIcon18);
+									lblResImg_18.setText("");
+
+									ImageIcon resIcon19 = new ImageIcon(proImgs.get(18).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_19.setIcon(resIcon19);
+									lblResImg_19.setText("");
+
+									ImageIcon resIcon20 = new ImageIcon(proImgs.get(19).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_20.setIcon(resIcon20);
+									lblResImg_20.setText("");
+
+									ImageIcon resIcon21 = new ImageIcon(proImgs.get(20).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_21.setIcon(resIcon21);
+									lblResImg_21.setText("");
+
+									ImageIcon resIcon22 = new ImageIcon(proImgs.get(21).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_22.setIcon(resIcon22);
+									lblResImg_22.setText("");
+
+									ImageIcon resIcon23 = new ImageIcon(proImgs.get(22).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_23.setIcon(resIcon23);
+									lblResImg_23.setText("");
+
+									ImageIcon resIcon24 = new ImageIcon(proImgs.get(23).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_24.setIcon(resIcon24);
+									lblResImg_24.setText("");
+
+									ImageIcon resIcon25 = new ImageIcon(proImgs.get(24).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_25.setIcon(resIcon25);
+									lblResImg_25.setText("");
+
+									ImageIcon resIcon26 = new ImageIcon(proImgs.get(25).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_26.setIcon(resIcon26);
+									lblResImg_26.setText("");
+
+									ImageIcon resIcon27 = new ImageIcon(proImgs.get(26).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_27.setIcon(resIcon27);
+									lblResImg_27.setText("");
+
+									ImageIcon resIcon28 = new ImageIcon(proImgs.get(27).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_28.setIcon(resIcon28);
+									lblResImg_28.setText("");
+
+									ImageIcon resIcon29 = new ImageIcon(proImgs.get(28).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_29.setIcon(resIcon29);
+									lblResImg_29.setText("");
+
+									ImageIcon resIcon30 = new ImageIcon(proImgs.get(29).getScaledInstance(128, 128, Image.SCALE_DEFAULT));
+									lblResImg_30.setIcon(resIcon30);
+									lblResImg_30.setText("");
+					 */
 				}
 			}
 		});

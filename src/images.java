@@ -2,7 +2,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,11 +27,11 @@ public class images {
 	 * This method creates the HSV histogram from the query image, reads in all the image data, then 
 	 * calls the function to generate comparison scores. The image database is then sorted by the score order.
 	 */
-	public static ArrayList<Image> details(Icon icon, String queryImgStr) throws IOException, ClassNotFoundException {
+	public static ArrayList<Image> details(Icon icon, String queryImgStr) throws Exception {
 
 		// timer
 		long startTime = System.nanoTime();
-		
+
 		final File qIm = new File(queryImgStr);
 		final File dir = new File("src\\gallery");
 
@@ -51,6 +50,7 @@ public class images {
 				return (false);
 			}
 		};
+
 
 		BufferedImage qImage = ImageIO.read(qIm);
 		int qWidth = qImage.getWidth();
@@ -79,6 +79,10 @@ public class images {
 		for (final File f : dir.listFiles(IMAGE_FILTER)) {
 			imgsDir.add(f.toString());
 		}
+		
+		if(imgsDir.size()<15) {
+			throw new Exception("Not enough images in the database to populate the interface.");
+		}
 
 		// method 0 *Correlation*
 		// method 1 *Chi-square*
@@ -87,7 +91,7 @@ public class images {
 		int method = 2;
 
 		ArrayList<Double> allResults = new ArrayList<Double>();
-		
+
 		// Get scores
 		allResults = new compareHist().run(imageHistMatrices, qhsvImage, method);
 		ArrayList<String> fproImgs = new ArrayList<String>();
@@ -109,7 +113,7 @@ public class images {
 			System.out.println(s);
 		}
 
-		// taking top 10 images Correlation and Intersection
+		// taking top images Correlation and Intersection
 		if (method == 1 || method == 3) {
 			for (int i = 0; i < fproImgs.size(); i++) {
 				File f = new File(fproImgs.get(i));
@@ -117,7 +121,7 @@ public class images {
 				proImgs.add(image);
 			}
 		}
-		// taking top 10 images for Bhattacharyya and Chi-Square
+		// taking top images for Bhattacharyya and Chi-Square
 		else {
 			for (int i = fproImgs.size() - 1; i > fproImgs.size() - 31; i--) {
 				File f = new File(fproImgs.get(i));
@@ -125,12 +129,12 @@ public class images {
 				proImgs.add(image);
 			}
 		}
-		
+
 		long endTime = System.nanoTime();  // Record the end time in nanoseconds
 		long elapsedTime = endTime - startTime;  // Calculate the elapsed time in nanoseconds		
 		double elapsedSeconds = (double) elapsedTime / 1_000_000_000.0;  // Convert elapsed time to seconds		
 		System.out.println("Elapsed time (s): " + elapsedSeconds); 
-		
+
 		return proImgs;
 	}
 
@@ -158,9 +162,9 @@ public class images {
 			s = delta / max;
 			if (rf == max) 
 				h = (gf - bf) / delta;
-			 else if (gf == max)
+			else if (gf == max)
 				h = 2 + (bf - rf) / delta;
-			 else 
+			else 
 				h = 4 + (rf - gf) / delta;
 			h *= 60;
 			if (h < 0) 
