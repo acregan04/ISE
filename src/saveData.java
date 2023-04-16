@@ -177,46 +177,4 @@ public class saveData implements Serializable {
 		}
 		return data;
 	}
-
-	/*
-	public static void saver(ArrayList<Double>[] scores) throws IOException {
-		// Create a new file 
-		File file = new File("src\\scores.csv");
-		if (file.exists()) { file.delete();
-		// Write the data 
-		FileWriter writer = new FileWriter(file); 
-		for (int i = 0; i < scores.length; i++) { 
-			// Write the ID 
-			writer.write("ID" + (i+1) + ",");
-			//ID1*Correlation*
-			//ID2 *Chi-square*
-			//ID3*Intersection*
-			//ID4*Bhattacharyya*
-			// Write the scores 
-			List<Double> row = scores[i]; 
-			for (Double score : row) {
-				writer.write(score + ","); }
-			// Move to next row 
-			writer.write("\n"); }
-		// Close the file 
-		writer.close(); }
-	}
-	public static ArrayList<Double>[] readScores() throws FileNotFoundException {
-		String fileName = "src\\scores.csv";
-		List<ArrayList<Double>> result = new ArrayList<>(); 
-		Scanner scanner = new Scanner(new File(fileName)); 
-		while (scanner.hasNextLine()) {
-			ArrayList<Double> row = new ArrayList<>(); 
-			String[] data = scanner.nextLine().split(","); 
-			for (int i = 1; i < data.length; i++) 
-			{
-				row.add(Double.parseDouble(data[i])); 
-			} 
-			result.add(row); 
-		} 
-		scanner.close();
-		return result.toArray(new ArrayList[0]); 
-	}
-	 */
-
 }
