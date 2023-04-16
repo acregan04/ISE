@@ -49,7 +49,7 @@ public class saveData implements Serializable {
 
 		long startTime = System.nanoTime();
 
-		final File dir = new File("src\\gallery");
+		final File dir = new File("src//gallery");
 		ArrayList<float[][][]> imageMatrices = new ArrayList<>();
 
 		if (dir.isDirectory()== false) { // make sure it's a directory
@@ -100,7 +100,7 @@ public class saveData implements Serializable {
 		}
 
 		//External file
-		File file = new File("src\\test.bin");
+		File file = new File("src//test.bin");
 
 		try (DataOutputStream out = new DataOutputStream(new FileOutputStream(file))) {
 			// Write the header
@@ -144,7 +144,7 @@ public class saveData implements Serializable {
 	 */
 	public static ArrayList<float[][][]> readHSV() throws IOException {
 
-		File file = new File("src\\test.bin");
+		File file = new File("src//test.bin");
 		ArrayList<float[][][]> data = new ArrayList<>();
 
 		try (DataInputStream in = new DataInputStream(new FileInputStream(file))) {

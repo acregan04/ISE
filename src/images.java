@@ -33,7 +33,7 @@ public class images {
 		long startTime = System.nanoTime();
 
 		final File qIm = new File(queryImgStr);
-		final File dir = new File("src\\gallery");
+		final File dir = new File("src//gallery");
 
 		// array of supported extensions
 		final String[] EXTENSIONS = new String[] { "jpg" };

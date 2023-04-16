@@ -235,7 +235,7 @@ public class gui extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 
 				JFileChooser chooser = new JFileChooser();
-				chooser.setCurrentDirectory(new File("src\\test")); // set the directory to start in
+				chooser.setCurrentDirectory(new File("src//test")); // set the directory to start in
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
 				chooser.setFileFilter(filter);
 				int returnVal = chooser.showOpenDialog(null);
