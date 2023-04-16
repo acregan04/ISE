@@ -123,7 +123,8 @@ public class images {
 		}
 		// taking top images for Bhattacharyya and Chi-Square
 		else {
-			for (int i = fproImgs.size() - 1; i > fproImgs.size() - 31; i--) {
+			//for (int i = fproImgs.size() - 1; i > fproImgs.size() - 31; i--) {
+			for (int i = fproImgs.size() - 1; i > fproImgs.size() - 16; i--) {
 				File f = new File(fproImgs.get(i));
 				BufferedImage image = ImageIO.read(f);
 				proImgs.add(image);

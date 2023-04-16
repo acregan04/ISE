@@ -20,7 +20,7 @@ public class compareHist {
 	 */
 	public ArrayList<Double> run(ArrayList<float[][][]> imageHistMatrices, float[][][] qHsv, int compareMethod) {
 
-		int numBins = 8;
+		int numBins = 7;
 		float[][][] histBase = histogram(qHsv, numBins);
 		ArrayList<Double> allResults = new ArrayList<Double>();
 

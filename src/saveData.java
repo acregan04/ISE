@@ -93,7 +93,7 @@ public class saveData implements Serializable {
 		ArrayList<float[][][]> imageHistoMatrices = new ArrayList<>();
 		for (int i = 0; i < imageMatrices.size(); i++) {
 
-			int numBins = 8;
+			int numBins = 7;
 			float[][][] histTest = compareHist.histogram(imageMatrices.get(i), numBins);
 			imageHistoMatrices.add(histTest);
 			System.out.println("hist: " + i);
@@ -155,7 +155,7 @@ public class saveData implements Serializable {
 			for (int k = 0; k < numImages; k++) {
 				int width = in.readInt();
 				int height = in.readInt();
-				int depth = 8;
+				int depth = 7;
 
 				// Initialize the image array with the correct dimensions
 				float[][][] image = new float[width][height][depth];
