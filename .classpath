@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/acreg/Desktop/final year/Project/ISE/src/miglayout15-swing.jar"/>
+	<classpathentry kind="lib" path="src/miglayout15-swing.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
